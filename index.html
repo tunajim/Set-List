@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  />
+  <title>PDF.js Directory Viewer</title>
+
+  <!-- PDF.js from CDN (with correct SRI) -->
+  <script
+    src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.8.162/pdf.min.js"
+    integrity="sha512-9Wd08apcJEwm8g3lBTg1UW/njdN0iuuOVWKpyinK3uA7ISAE5PmEZ4y8bZYTXVOE3tlt7aFlCBBLmLt5cUxe2Q=="
+    crossorigin="anonymous"
+    referrerpolicy="no-referrer"
+  ></script>
+
+  <style>
+	html, body {
+		height: 100%;
+	}
+
+    body {
+      font-family: sans-serif;
+      display: flex;
+	  position: relative;
+      margin: 1rem;
+    }
+    nav {
+      width: 200px;
+      margin-right: 2rem;
+    }
+    nav ul {
+      list-style: none;
+      padding: 0;
+    }
+    nav li + li {
+      margin-top: 0.5rem;
+    }
+    nav a {
+      text-decoration: none;
+      color: #007acc;
+      cursor: pointer;
+    }
+    nav a.active {
+      font-weight: bold;
+      color: #000;
+    }
+    #pdf-container {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+    #pdf-container canvas {
+      border: 1px solid #ccc;
+      max-width: 100%;
+      height: auto;
+      align-self: center;
+    }
+
+	nav {
+		position: fixed;
+		left: 3rem;
+		top: 3rem;
+	}
+
+	.spacer {
+		width: 200px;
+		height: 100%;
+	}
+
+
+	#scroll-speed {
+		position: fixed;
+		background-color: rgba(0, 255, 255, 0.449);
+		border-radius: 15px;
+		/* height: 250px; */
+		padding: 1rem 0;
+		left: 3rem;
+		bottom: 3rem;
+	}
+
+	#scroll-speed > div {
+		
+		display: flex;
+		gap: 2rem;
+		flex-direction: column;
+		align-items: center;
+		width: 100%;
+		box-sizing: border-box;
+		padding: 1rem;
+	}
+
+  </style>
+</head>
+
+<body>
+  <nav>
+    <h2>Documents</h2>
+    <ul id="pdf-list">
+      <!-- Edit these to match PDFs in your site directory -->
+      <li><a data-url="pdfs/learn-to-fly.pdf">Learn to Fly</a></li>
+      <li><a data-url="pdfs/wait-so-long.pdf">Wait so Long</a></li>
+      <li><a data-url="pdfs/hey-joe.pdf">Hey Joe</a></li>
+      <li><a data-url="pdfs/hey-joe.pdf">Hey Joe</a></li>
+    </ul>
+  </nav>
+
+  <div class="spacer"></div>
+
+	<div id="scroll-speed">
+		<div>
+			<input
+			type="range"
+			id="scroller"
+			min="0"
+			max="50"
+			value="50"
+			orient="vertical"
+			/>
+		</div>
+  </div>
+
+  <div id="pdf-container">
+    <p>Select a document from the menu.</p>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
