@@ -77,9 +77,11 @@
 		background-color: rgba(0, 255, 255, 0.449);
 		border-radius: 15px;
 		/* height: 250px; */
-		padding: 1rem 0;
+		padding: 1rem;
 		left: 3rem;
 		bottom: 3rem;
+    display: flex;
+    flex-direction: column;
 	}
 
 	#scroll-speed > div {
@@ -93,6 +95,25 @@
 		padding: 1rem;
 	}
 
+  button {
+    background-color: #007acc;
+    color: white;
+    border: none;
+    padding: 0.5rem 1rem;
+    cursor: pointer;
+    border-radius: 5px;
+    width: 50px;
+    height: 50px;
+    margin: auto;
+  }
+
+  #pdf-list {
+    max-height: 30vh;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: .5rem;
+  }
   </style>
 </head>
 
@@ -132,6 +153,7 @@
   <div class="spacer"></div>
 
 	<div id="scroll-speed">
+    <button id="scroll-plus">+</button>
 		<div>
 			<input
 			type="range"
@@ -139,9 +161,11 @@
 			min="0"
 			max="50"
 			value="50"
+      step="10"
 			orient="vertical"
 			/>
 		</div>
+    <button id="scroll-minus">-</button>
   </div>
 
   <div id="pdf-container">

@@ -91,3 +91,19 @@ let speed = { value: 0 }; // Initialize speed variable
 speedBar.addEventListener("input", (e) => {
   speed.value = parseFloat(speedBar.value);
 });
+
+
+const plus = document.getElementById("scroll-plus");
+const minus = document.getElementById("scroll-minus");
+
+// Increase speed
+plus.addEventListener("click", () => {
+  speed.value += 10; // Increase speed by 0.1
+  speedBar.value = speed.value; // Update the slider value
+});
+
+// Decrease speed
+minus.addEventListener("click", () => {
+  speed.value = Math.max(0, speed.value - 10); // Decrease speed by 0.1 but not below 0
+  speedBar.value = speed.value; // Update the slider value
+});
