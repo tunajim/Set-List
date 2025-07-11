@@ -1,177 +1,206 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta
-    name="viewport"
-    content="width=device-width, initial-scale=1.0"
-  />
-  <title>PDF.js Directory Viewer</title>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>PDF.js Directory Viewer</title>
 
-  <!-- PDF.js from CDN (with correct SRI) -->
-  <script
-    src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.8.162/pdf.min.js"
-    integrity="sha512-9Wd08apcJEwm8g3lBTg1UW/njdN0iuuOVWKpyinK3uA7ISAE5PmEZ4y8bZYTXVOE3tlt7aFlCBBLmLt5cUxe2Q=="
-    crossorigin="anonymous"
-    referrerpolicy="no-referrer"
-  ></script>
+    <!-- PDF.js from CDN (with correct SRI) -->
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.8.162/pdf.min.js"
+      integrity="sha512-9Wd08apcJEwm8g3lBTg1UW/njdN0iuuOVWKpyinK3uA7ISAE5PmEZ4y8bZYTXVOE3tlt7aFlCBBLmLt5cUxe2Q=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    ></script>
 
-  <style>
-	html, body {
-		height: 100%;
-	}
+    <style>
+      html,
+      body {
+        height: 100%;
+      }
 
-    body {
-      font-family: sans-serif;
-      display: flex;
-	  position: relative;
-      margin: 1rem;
-    }
-    nav {
-      width: 200px;
-      margin-right: 2rem;
-    }
-    nav ul {
-      list-style: none;
-      padding: 0;
-    }
-    nav li + li {
-      margin-top: 0.5rem;
-    }
-    nav a {
-      text-decoration: none;
-      color: #007acc;
-      cursor: pointer;
-    }
-    nav a.active {
-      font-weight: bold;
-      color: #000;
-    }
-    #pdf-container {
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      gap: 1rem;
-    }
-    #pdf-container canvas {
-      border: 1px solid #ccc;
-      max-width: 100%;
-      height: auto;
-      align-self: center;
-    }
+      body {
+        font-family: sans-serif;
+        display: flex;
+        position: relative;
+        margin: 1rem;
+      }
 
-	nav {
-		position: fixed;
-		left: 3rem;
-		top: 1rem;
-	}
+      .sidebar {
+        position: fixed;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        padding: 1rem;
+        align-items: center;
+        gap: 1rem;
+        top: 0;
+        left: 0;
 
-	.spacer {
-		width: 200px;
-		height: 100%;
-	}
+        box-sizing: border-box;
+      }
 
+      #pdf-container {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+        width: 100%;
+        z-index: -1;
+        /* pointer-events: none; */
+      }
+      #pdf-container canvas {
+        border: 1px solid #ccc;
+        max-width: 100%;
+        height: auto;
+        align-self: center;
+      }
 
-	#scroll-speed {
-		position: fixed;
-		background-color: rgba(0, 255, 255, 0.449);
-		border-radius: 15px;
-		/* height: 250px; */
-		padding: 1rem;
-		left: 3rem;
-		bottom: 3rem;
-    display: flex;
-    flex-direction: column;
-	}
+      canvas {
+      }
 
-	#scroll-speed > div {
-		
-		display: flex;
-		gap: 2rem;
-		flex-direction: column;
-		align-items: center;
-		width: 100%;
-		box-sizing: border-box;
-		padding: 1rem;
-	}
+      nav {
+        position: fixed;
+        left: 3rem;
+        top: 1rem;
+      }
 
-  button {
-    background-color: #007acc;
-    color: white;
-    border: none;
-    padding: 0.5rem 1rem;
-    cursor: pointer;
-    border-radius: 5px;
-    width: 50px;
-    height: 50px;
-    margin: auto;
-  }
+      .spacer {
+        width: 200px;
+        height: 100%;
+      }
 
-  #pdf-list {
-    max-height: 30vh;
-    overflow-y: auto;
-    display: flex;
-    flex-direction: column;
-    gap: .5rem;
-  }
-  </style>
-</head>
+      #scroll-speed {
+        background-color: rgba(0, 255, 255, 0.449);
+        border-radius: 15px;
+        /* height: 250px; */
+        padding: 1rem;
+        left: 3rem;
+        bottom: 1rem;
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+      }
 
-<body>
-  <nav>
-    <h2>SET LIST</h2>
-    <ul id="pdf-list">
-      <!-- Edit these to match PDFs in your site directory -->
-      <li><a data-url="pdfs/learn-to-fly.pdf">Learn to Fly</a></li>
-      <li><a data-url="pdfs/wait-so-long.pdf">Wait so Long</a></li>
-      <li><a data-url="pdfs/hey-joe.pdf">Hey Joe</a></li>
-      <li><a data-url="pdfs/put-it-on-you.pdf">put-it-on-you</a></li>
-      <li><a data-url="pdfs/take-it-easy.pdf">take-it-easy</a></li>
-      <li><a data-url="">yellowled/1979</a></li>
+      #scroll-speed > div {
+        display: flex;
+        gap: 2rem;
+        flex-direction: column;
+        align-items: center;
+        width: 100%;
+        box-sizing: border-box;
+        padding: 1rem;
+      }
 
-      <li><a data-url="pdfs/nothing-else-matters.pdf">nothing-else-matters</a></li>
-      <li><a data-url="pdfs/jolene.pdf">jolene</a></li>
-      <li><a data-url="pdfs/make-it-rain.pdf">make-it-rain</a></li>
-      <li><a data-url="pdfs/hotel-california.pdf">hotel-california</a></li>
-      <li><a data-url="pdfs/better-days.pdf">better-days</a></li>
-      <li><a data-url="">40oz/bubble</a></li>
-      <li><a data-url="pdfs/doves-cry.pdf">doves-cry</a></li>
-      <li><a data-url="pdfs/mary-janes-last-dance.pdf">mary-janes-last-dance</a></li>
+      button {
+        background-color: #007acc;
+        color: white;
+        border: none;
+        padding: 0.5rem 1rem;
+        cursor: pointer;
+        border-radius: 5px;
+        width: 50px;
+        height: 50px;
+        margin: auto;
+      }
 
-      <li><a data-url="">wish/time/breathe</a></li>
+      #pdf-list {
+        max-height: 20vh;
+        overflow-y: auto;
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+        z-index: 200;
+      }
 
-      <li><a data-url="pdfs/hey-jude.pdf">hey-jude</a></li>
+      #play-pause {
+        background-color: white;
+        background-image: url("play.png");
+        background-size: 25px;
+        background-position: center;
+        background-repeat: no-repeat;
+        border: 1px solid #007acc;
+      }
 
-      <li><p>EXTRAS</p></li>
+      #play-pause.active {
+        background-image: url("pause.png");
+      }
 
-      <li><a data-url="pdfs/sittin-on-the-dock-of-the-bay.pdf">sittin-on-the-dock-of-the-bay</a></li>
+      #controls {
+        z-index: 100;
+      }
+    </style>
+  </head>
 
-      <li><a data-url="pdfs/stand-by-me.pdf">stand-by-me</a></li>
-    </ul>
-  </nav>
+  <body>
+    <div class="sidebar">
+      <h2>SET LIST</h2>
+      <ul id="pdf-list">
+        <!-- Edit these to match PDFs in your site directory -->
+        <li><a data-url="pdfs/learn-to-fly.pdf">Learn to Fly</a></li>
+        <li><a data-url="pdfs/wait-so-long.pdf">Wait so Long</a></li>
+        <li><a data-url="pdfs/hey-joe.pdf">Hey Joe</a></li>
+        <li><a data-url="pdfs/put-it-on-you.pdf">put-it-on-you</a></li>
+        <li><a data-url="pdfs/take-it-easy.pdf">take-it-easy</a></li>
+        <li><a data-url="">yellowled/1979</a></li>
 
-  <div class="spacer"></div>
+        <li>
+          <a data-url="pdfs/nothing-else-matters.pdf">nothing-else-matters</a>
+        </li>
+        <li><a data-url="pdfs/jolene.pdf">jolene</a></li>
+        <li><a data-url="pdfs/make-it-rain.pdf">make-it-rain</a></li>
+        <li><a data-url="pdfs/hotel-california.pdf">hotel-california</a></li>
+        <li><a data-url="pdfs/better-days.pdf">better-days</a></li>
+        <li><a data-url="">40oz/bubble</a></li>
+        <li><a data-url="pdfs/doves-cry.pdf">doves-cry</a></li>
+        <li>
+          <a data-url="pdfs/mary-janes-last-dance.pdf">mary-janes-last-dance</a>
+        </li>
 
-	<div id="scroll-speed">
-    <button id="scroll-plus">+</button>
-		<div>
-			<input
-			type="range"
-			id="scroller"
-			min="0"
-			max="50"
-			value="50"
-      step="10"
-			orient="vertical"
-			/>
-		</div>
-    <button id="scroll-minus">-</button>
-  </div>
+        <li><a data-url="">wish/time/breathe</a></li>
 
-  <div id="pdf-container">
-    <p>Select a document from the menu.</p>
-  </div>
+        <li><a data-url="pdfs/hey-jude.pdf">hey-jude</a></li>
 
-  <script src="app.js"></script>
-</body>
+        <li><p>EXTRAS</p></li>
+
+        <li>
+          <a data-url="pdfs/sittin-on-the-dock-of-the-bay.pdf"
+            >sittin-on-the-dock-of-the-bay</a
+          >
+        </li>
+
+        <li><a data-url="pdfs/stand-by-me.pdf">stand-by-me</a></li>
+      </ul>
+      <div id="controls">
+        <button id="zoom-out">–</button>
+        <span id="zoom-level">100%</span>
+        <button id="zoom-in">+</button>
+      </div>
+      <div id="scroll-speed">
+        <button id="play-pause"></button>
+        <button id="scroll-plus">+</button>
+        <div>
+          <input
+            type="range"
+            id="scroller"
+            min="0"
+            max="50"
+            value="40"
+            step="10"
+            orient="vertical"
+          />
+        </div>
+        <button id="scroll-minus">-</button>
+      </div>
+    </div>
+
+    <div class="spacer"></div>
+
+    <div id="pdf-container">
+      <p>Select a document from the menu.</p>
+    </div>
+
+    <script src="app.js"></script>
+  </body>
 </html>
