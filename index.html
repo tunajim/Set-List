@@ -41,6 +41,7 @@
         box-sizing: border-box;
       }
 
+
       #pdf-container {
         flex: 1;
         display: flex;
@@ -110,8 +111,15 @@
         overflow-y: auto;
         display: flex;
         flex-direction: column;
-        gap: 0.5rem;
+        gap: 1rem;
         z-index: 200;
+        list-style: none;
+      }
+
+      #pdf-list li {
+        width: 100%;
+        text-align: left;
+        color: #007acc;
       }
 
       #play-pause {
