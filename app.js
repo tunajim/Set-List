@@ -13,7 +13,7 @@ let isPlaying = false; // Track play/pause state
 let scrollInterval; // Store the interval ID for scrolling
 
 let pdfDoc = null;           // PDFDocumentProxy
-let currentScale = 1;      // 120% start
+let currentScale = 1.2;      // 120% start
 const scaleStep = 0.1;
 const minScale  = 0.5;
 const maxScale  = 5.0;
@@ -104,7 +104,15 @@ pdfList.addEventListener('click', e => {
   pdfList.querySelectorAll('a.active').forEach(x => x.classList.remove('active'));
   a.classList.add('active');
 
+  // make sure zoom is consistent
+  zoomLevelTxt.textContent = '100%'; // Reset zoom text
+  const previousScale = currentScale; // Store previous scale
+  currentScale = 1; // Reset scale to 100%
+
   loadPdf(a.dataset.url);
+  currentScale = previousScale; // Restore previous scale
+  applyZoom(); // Apply the restored scale
+
 });
 
 const speedBar = document.getElementById("scroller");
